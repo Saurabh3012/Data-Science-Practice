@@ -61,8 +61,49 @@ from keras.layers import Dense
 classifier = Sequential()
 
 # Adding the input layer and first hidden layer
+# We will use rectifier function for hidden layers and sigmoid for output layer
+
 # units - taken to be the (sum of number of(inputs + outputs))/2
 # kernel_initializer - assigns input value to weights.
 # activation - linear, sigmoid, rectifier, tanh 
 # input_dim - to be entered just for the first time
 classifier.add(Dense(units = 6, kernel_initializer='uniform', activation = 'relu', input_dim = 11))
+
+# Adding a second input layer
+classifier.add(Dense(units = 6, kernel_initializer='uniform', activation = 'relu'))
+
+# Adding the output layer
+# units - set to 1 because we just need 1 output
+# Note - for multiple classes(>2) use units = no_of_classes and activation = 'softmax' 
+classifier.add(Dense(units = 1, kernel_initializer='uniform', activation = 'sigmoid'))
+
+# Compiling the ANN
+# loss = categorical_crossentropy - for classes > 2 (Non-binary)
+classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'] )
+
+# Fitting the ANN to the training set.
+classifier.fit(X_train, y_train, batch_size = 10, epochs = 100)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
