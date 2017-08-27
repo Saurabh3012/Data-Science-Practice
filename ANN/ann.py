@@ -86,7 +86,34 @@ classifier.fit(X_train, y_train, batch_size = 10, epochs = 100)
 
 
 
+#### Part 3: Making the predictions and evaluating the model ####
 
+# Predicting the test set results
+y_pred = classifier.predict(X_test)
+ 
+# To compare with the y_test (actual) we have to first convert these probabilities
+# into true/false or 1/0
+y_pred = (y_pred>0.5)
+
+# Making the confusion matrix
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_test, y_pred)
+
+# Predicting for a single observation - To do this we have to encode our new inputs
+# and scale them as well. 
+'''Geography: France
+Credit Score: 600
+Gender: Male
+Age: 40 years old
+Tenure: 3 years
+Balance: $60000
+Number of Products: 2
+Does this customer have a credit card ? Yes
+Is this customer an Active Member: Yes
+Estimated Salary: $50000'''
+
+single_ip = sc.transform(np.array([[0, 0, 600, 1, 40, 3, 60000, 2, 1, 1, 50000]]))
+y_single_pred = (classifier.predict(single_ip)>0.5)
 
 
 
