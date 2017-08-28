@@ -48,38 +48,30 @@ sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
 X_test = sc.fit_transform(X_test) 
 
+'''in continuation to ann_tuning.py'''
 
-
-#### Part 2: Data Modelling ####
-
-# Importing the libraries
-import keras
+# Imports
 from keras.models import Sequential
 from keras.layers import Dense
+from keras.wrappers.scikit_learn import KerasClassifier
+from sklearn.model_selection import cross_val_score
 
-# Initializing ANN
+# To prevent overfitting, use dropout
+from keras.layers import Dropout
+
 classifier = Sequential()
 
-# Adding the input layer and first hidden layer
-# We will use rectifier function for hidden layers and sigmoid for output layer
-
-# units - taken to be the (sum of number of(inputs + outputs))/2
-# kernel_initializer - assigns input value to weights.
-# activation - linear, sigmoid, rectifier, tanh 
-# input_dim - to be entered just for the first time
+# Adding input and first layer with dropout
 classifier.add(Dense(units = 6, kernel_initializer='uniform', activation = 'relu', input_dim = 11))
+classifier.add(Dropout(p = 0.1))
 
-# Adding a second input layer
 classifier.add(Dense(units = 6, kernel_initializer='uniform', activation = 'relu'))
+classifier.add(Dropout(p = 0.1))
 
-# Adding the output layer
-# units - set to 1 because we just need 1 output
-# Note - for multiple classes(>2) use units = no_of_classes and activation = 'softmax' 
+
 classifier.add(Dense(units = 1, kernel_initializer='uniform', activation = 'sigmoid'))
-
-# Compiling the ANN
-# loss = categorical_crossentropy - for classes > 2 (Non-binary)
 classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'] )
+
 
 # Fitting the ANN to the training set.
 classifier.fit(X_train, y_train, batch_size = 10, epochs = 100)
@@ -99,18 +91,28 @@ y_pred = (y_pred>0.5)
 from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(y_test, y_pred)
 
-# Predicting for a single observation - To do this we have to encode our new inputs
-# and scale them as well. 
-'''Geography: France
-Credit Score: 600
-Gender: Male
-Age: 40 years old
-Tenure: 3 years
-Balance: $60000
-Number of Products: 2
-Does this customer have a credit card ? Yes
-Is this customer an Active Member: Yes
-Estimated Salary: $50000'''
 
-single_ip = sc.transform(np.array([[0, 0, 600, 1, 40, 3, 60000, 2, 1, 1, 50000]]))
-y_single_pred = (classifier.predict(single_ip)>0.5)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
